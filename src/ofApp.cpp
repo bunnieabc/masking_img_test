@@ -21,7 +21,6 @@ void ofApp::loadFile(string fileName){
     // load SVG points file
     // I have already convert them to txt file
     // their format is "x0,y0 x1,y1 x2,y2"
-    // Now I only load it once
     
     // initial all the variables
     count = 0;
@@ -46,16 +45,15 @@ void ofApp::loadFile(string fileName){
             istringstream ss(coordStr[j]);
             
             int first = 0;
+            // if encounter "," the string before ',' would be saved to variable number
             while (getline(ss,number, ','))
             {
                 if(first == 0){
                     point.x = std::atof(number.c_str());
-                    //std::cout <<"number1: " << number << '\n';
                     first = 1;
                 }
                 else {
                     point.y = std::atof(number.c_str());
-                    //std::cout <<"number2: " << number << '\n';
                     first = 0;
                 }
             }
@@ -104,6 +102,8 @@ void ofApp::loadImg(int num){
         
         // num is a variable changed by time
         int imgIndex = (i + num) % count;
+        
+        // start to allocate a mask and draw polygon
         fbos[i].allocate(imgs[imgIndex].getWidth(), imgs[imgIndex].getHeight(),GL_RGBA);
         fbos[i].begin();
         {
@@ -126,6 +126,7 @@ void ofApp::loadImg(int num){
         fbos[i].end();
         
         imgs[imgIndex].getTexture().setAlphaMask(fbos[i].getTexture());
+        // end to allocate a mask and draw polygon
     }
     firstLoad = 1;
 }
