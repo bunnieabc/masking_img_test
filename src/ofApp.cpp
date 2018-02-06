@@ -71,11 +71,11 @@ void ofApp::loadImg(int num){
     
     // ---------------------------------------------------
     // initial the img array, fbos, path
-    // fbo is an array used to create mask for images
+    // fbos is an array used to create mask for images
     // imgs is an array used to put all the images
-    // path is an array used to draw path
+    // paths is an array used to draw path
     
-    // paths and fbos should be reinitialed everytime I change texture
+    // paths and fbos should be cleared and reinitialed everytime I change texture
     // but imgs only need to be loaded once. This could speed up showing images.
     
     paths.clear();
