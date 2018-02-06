@@ -45,4 +45,5 @@ class ofApp : public ofBaseApp{
         int count;
         int countFrame;
         int change;
+        int firstLoad;
 };
