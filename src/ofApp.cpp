@@ -5,17 +5,14 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    // initial all the variables
-    count = 0;
-    countFrame = 0;
-    change = 0;
-    firstLoad = 0;  // if it is first time load image
+    countPressed = 0;
+    files.push_back("test.txt");
+    files.push_back("ani.txt");
+    files.push_back("cat.txt");
+    files.push_back("ani2.txt");
     
-    loadFile("test.txt"); // check loadFile function
-    
-     // It is first time load image, so the variable is 0
-    loadImg(0); // check loadImg function
-    
+    loadFile(files[countPressed]); // check loadFile function
+
 }
 
 void ofApp::loadFile(string fileName){
@@ -26,7 +23,13 @@ void ofApp::loadFile(string fileName){
     // their format is "x0,y0 x1,y1 x2,y2"
     // Now I only load it once
     
+    // initial all the variables
+    count = 0;
+    countFrame = 0;
+    change = 0;
+    firstLoad = 0;  // if it is first time load image
    
+    shapes.clear();
     ifstream infile;
     infile.open (ofToDataPath(fileName).c_str());
     if(!infile) {cout << "Error: File not found or corrupt. "<< endl;}
@@ -61,7 +64,9 @@ void ofApp::loadFile(string fileName){
         shapes.push_back(sCoord);
         count ++ ;
     }
-    
+    imgs.clear();
+    loadImg(0); // check loadImg function
+    // It is first time load image, so the variable is 0
 }
 
 void ofApp::loadImg(int num){
@@ -137,12 +142,16 @@ void ofApp::draw(){
     ofBackground(244,234,222);
     
     // change the textures
-    loadImg( (int)(ofGetElapsedTimef()*5));
+    int randomNum = ((int)(ofGetElapsedTimef()*5)% 60);
+    loadImg(randomNum);
     
     // draw all the shapes
     for(int j = 0 ; j < count ; j++) {
         imgs[j].draw(0,0);
     }
+    
+
+    
 }
 
 //--------------------------------------------------------------
@@ -167,12 +176,17 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    
+    // click the canvas and then the SVG file would change;
+    countPressed ++;
+    if (countPressed == 4) countPressed = 0;
+    loadFile(files[countPressed]);
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------

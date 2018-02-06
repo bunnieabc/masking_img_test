@@ -42,9 +42,11 @@ class ofApp : public ofBaseApp{
         vector <ofPath> paths;
         vector <ofImage> imgs;
         vector <svgShape> shapes;
+        vector <string> files;
         ofFbo fbo, fbo2;
         int count;
         int countFrame;
         int change;
         int firstLoad;
+        int countPressed;
 };
