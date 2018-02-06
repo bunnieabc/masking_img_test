@@ -34,6 +34,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
         void loadImg(int num);
+        void loadFile(string fileName);
         ofPath path, path2;
         ofImage img, img2;
         vector <float> coordinates;

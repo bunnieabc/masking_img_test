@@ -4,19 +4,37 @@
 #include <sstream>
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     // initial all the variables
     count = 0;
     countFrame = 0;
     change = 0;
-    firstLoad = 0;  // if first load image
+    firstLoad = 0;  // if it is first time load image
     
+    loadFile("test.txt"); // check loadFile function
+    
+     // It is first time load image, so the variable is 0
+    loadImg(0); // check loadImg function
+    
+}
+
+void ofApp::loadFile(string fileName){
+    
+    // -----------------------------------------------------
+    // load SVG points file
+    // I have already convert them to txt file
+    // their format is "x0,y0 x1,y1 x2,y2"
+    // Now I only load it once
+    
+   
     ifstream infile;
-    infile.open (ofToDataPath("ani.txt").c_str());
+    infile.open (ofToDataPath(fileName).c_str());
     if(!infile) {cout << "Error: File not found or corrupt. "<< endl;}
     string coordStr[3];
+    
+    // load the strings from txt files
     while(infile >> coordStr[0] && infile >>  coordStr[1] && infile >>  coordStr[2])
     {
-        //cout << coordStr[0] << " " << coordStr[1] << " " << coordStr[2] << endl;
         svgShape sCoord;
         
         for(int j = 0; j < 3; j++) {
@@ -43,35 +61,20 @@ void ofApp::setup(){
         shapes.push_back(sCoord);
         count ++ ;
     }
-    cout << "count" << count << '\n';
-    //count ++ ;
-  
-    loadImg(0);
-    //min move
-    /*
-     for(int i = 0; i < count; i++) {
-         double minX, minY;
-         minX = shapes[i].points[0].x;
-         minY = shapes[i].points[0].y;
-         for(int j = 0; j < 3; j++) {
-         if (shapes[i].points[j].x<= minX){
-         minX = shapes[i].points[j].x;
-         }
-         if (shapes[i].points[j].y<= minY){
-         minY = shapes[i].points[j].y;
-         }
-         }
-         shapes[i].moveCoordX = minX;
-         shapes[i].moveCoordY = minY;
-     }
-    */
+    
 }
 
 void ofApp::loadImg(int num){
     
+    // ---------------------------------------------------
     // initial the img array, fbos, path
+    // fbo is an array used to create mask for images
+    // imgs is an array used to put all the images
+    // path is an array used to draw path
     
-    //imgs.clear();
+    // paths and fbos should be reinitialed everytime I change texture
+    // but imgs only need to be loaded once. This could speed up showing images.
+    
     paths.clear();
     fbos.clear();
     for(int i = 0; i < count; i++) {
@@ -82,34 +85,31 @@ void ofApp::loadImg(int num){
         ofFbo fboUnit;
         ofPath pathUnit;
         
-        
         fbos.push_back(fboUnit);
         paths.push_back(pathUnit);
     }
+    
     for(int i = 0; i < count; i++){
-
+        
+        // load images only once, it reduce the time loading images
         if(firstLoad == 0){
             string loadStr = std::to_string((i + num) % 15) + ".jpg";
             imgs[i].load(loadStr);
-        //cout<< "loadstr: " << loadStr <<'\n';
         }
         
-    
+        // num is a variable changed by time
         int imgIndex = (i + num) % count;
-        
         fbos[i].allocate(imgs[imgIndex].getWidth(), imgs[imgIndex].getHeight(),GL_RGBA);
-        
         fbos[i].begin();
         {
             ofClear(0,0,0,0);
-            //ofBackground(255,255,255);
         }
         fbos[i].end();
         
         fbos[i].begin();
         {
             ofClear(0,0,0,0);
-            //ofBackground(255,255,255);
+            
             ofSetColor(255);
             paths[i].lineTo(shapes[i].points[0].x, shapes[i].points[0].y);
             paths[i].lineTo(shapes[i].points[1].x, shapes[i].points[1].y);
@@ -132,11 +132,14 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    //now we add lines to our path
+    
+    // change background
     ofBackground(244,234,222);
     
+    // change the textures
     loadImg( (int)(ofGetElapsedTimef()*5));
     
+    // draw all the shapes
     for(int j = 0 ; j < count ; j++) {
         imgs[j].draw(0,0);
     }
