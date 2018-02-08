@@ -45,6 +45,7 @@ class ofApp : public ofBaseApp{
         vector <svgShape> shapes;
         vector <string> files;
         ofFbo fbo, fbo2;
+        string lorem;
         int count;
         int countFrame;
         int change;
@@ -55,4 +56,6 @@ class ofApp : public ofBaseApp{
         vector <ofVideoPlayer> backgrounds;
         vector <string> background_files;
         ofVideoPlayer background;
+        ofTrueTypeFont myfont, mytitle;
+   
 };

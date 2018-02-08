@@ -5,19 +5,24 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    myfont.loadFont("Lovelo Black.otf", 25);
+    mytitle.loadFont("Lovelo Black.otf", 70);
+    lorem = "LOREM IPSUM";
     countPressed = 0;
     countKey = 0;
     files.push_back("panda.txt");
-    files.push_back("ani.txt");
+    files.push_back("el.txt");
     files.push_back("cat.txt");
     files.push_back("ani2.txt");
+    files.push_back("sheep.txt");
     //ofPushMatrix();
     loadFile(files[countPressed]); // check loadFile function
     //ofPopMatrix();
     background_files.push_back("video1.mp4");
-    background_files.push_back("video2.mp4");
+    background_files.push_back("video5.mp4");
     background_files.push_back("video3.mp4");
     background_files.push_back("video4.mp4");
+    background_files.push_back("video5.mp4");
     
     background.load(background_files[countPressed]);
     ofPushMatrix();
@@ -154,17 +159,16 @@ void ofApp::loadImg(int num){
 //--------------------------------------------------------------
 void ofApp::update(){
     background.update();
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    // change background
+   // change background
     ofBackground(244,234,222);
 
     background.draw(0,0);
-    
     
     // change the textures
     int randomNum = ((int)(ofGetElapsedTimef()*5)% 60);
@@ -173,20 +177,31 @@ void ofApp::draw(){
     // draw all the shapes
     for(int j = 0 ; j < count ; j++) {
         imgs[j].draw(0,0);
+    
     }
-    
-
-    
+    ofPushStyle();
+    ofSetColor(0, 0, 0, 200);
+    mytitle.drawString(lorem, ofGetWidth()/10,ofGetHeight()/9 * 7);
+    myfont.drawString("Become you own collage artist.", ofGetWidth()/10,ofGetHeight()/9 * 8 - 20);
+    //ofRotate(9, 0, 0, 1);
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     // do the screenshot
-    if(key == 'x'){
+    if(key == OF_KEY_DEL || key == OF_KEY_BACKSPACE){
+        lorem = lorem.substr(0, lorem.length()-1);
+    }
+    else if(key == OF_KEY_RETURN){
         countKey++;
         imgOut.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
         string str1 = "output/screenshot" + std::to_string(countKey) + ".png";
         imgOut.save(str1);
+    }
+    else {
+        ofAppendUTF8(lorem, key);
+        mytitle.drawString(lorem, ofGetWidth()/10,ofGetHeight()/9 * 7);
     }
 }
 
@@ -207,10 +222,10 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    
+    lorem ="Lorem Ipsum";
     // click the canvas and then the SVG file would change;
     countPressed ++;
-    if (countPressed == 4) countPressed = 0;
+    if (countPressed == 5) countPressed = 0;
     loadFile(files[countPressed]);
     
     ofVideoPlayer Vid;
