@@ -6,13 +6,33 @@
 void ofApp::setup(){
     
     countPressed = 0;
-    files.push_back("test.txt");
+    countKey = 0;
+    files.push_back("panda.txt");
     files.push_back("ani.txt");
     files.push_back("cat.txt");
     files.push_back("ani2.txt");
-    
+    //ofPushMatrix();
     loadFile(files[countPressed]); // check loadFile function
+    //ofPopMatrix();
+    background_files.push_back("video1.mp4");
+    background_files.push_back("video2.mp4");
+    background_files.push_back("video3.mp4");
+    background_files.push_back("video4.mp4");
+    
+    background.load(background_files[countPressed]);
+    ofPushMatrix();
+    
+    //ofEnableAlphaBlending();
+    //ofSetColor(255, 255, 255, 100);
+    //background.of
+    background.play();
+    
+    ofPopMatrix();
+}
 
+void ofApp::loadBackground(string background_name){
+    background.load(background_name);
+    background.play();
 }
 
 void ofApp::loadFile(string fileName){
@@ -114,8 +134,8 @@ void ofApp::loadImg(int num){
         fbos[i].begin();
         {
             ofClear(0,0,0,0);
-            
-            ofSetColor(255);
+            //ofSetColor(255, 255, 255, 255);
+            //ofSetColor(255);
             paths[i].lineTo(shapes[i].points[0].x, shapes[i].points[0].y);
             paths[i].lineTo(shapes[i].points[1].x, shapes[i].points[1].y);
             paths[i].lineTo(shapes[i].points[2].x, shapes[i].points[2].y);
@@ -133,6 +153,7 @@ void ofApp::loadImg(int num){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    background.update();
     
 }
 
@@ -141,6 +162,9 @@ void ofApp::draw(){
     
     // change background
     ofBackground(244,234,222);
+
+    background.draw(0,0);
+    
     
     // change the textures
     int randomNum = ((int)(ofGetElapsedTimef()*5)% 60);
@@ -157,7 +181,13 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    // do the screenshot
+    if(key == 'x'){
+        countKey++;
+        imgOut.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
+        string str1 = "output/screenshot" + std::to_string(countKey) + ".png";
+        imgOut.save(str1);
+    }
 }
 
 //--------------------------------------------------------------
@@ -182,6 +212,11 @@ void ofApp::mousePressed(int x, int y, int button){
     countPressed ++;
     if (countPressed == 4) countPressed = 0;
     loadFile(files[countPressed]);
+    
+    ofVideoPlayer Vid;
+    backgrounds.push_back(Vid);
+    
+    loadBackground(background_files[countPressed]);
     
 }
 

@@ -35,8 +35,9 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
         void loadImg(int num);
         void loadFile(string fileName);
+        void loadBackground(string background_name);
         ofPath path, path2;
-        ofImage img, img2;
+        ofImage img, img2, imgOut;
         vector <float> coordinates;
         vector <ofFbo> fbos;
         vector <ofPath> paths;
@@ -49,4 +50,9 @@ class ofApp : public ofBaseApp{
         int change;
         int firstLoad;
         int countPressed;
+        int countKey;
+    
+        vector <ofVideoPlayer> backgrounds;
+        vector <string> background_files;
+        ofVideoPlayer background;
 };
