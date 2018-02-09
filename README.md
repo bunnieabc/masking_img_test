@@ -1,5 +1,5 @@
-# masking_img_test
-##Collage Art Poster Generator
+#Collage Art Poster Generator
+
 ##Just put textures you want and svg into the folder. 
 
 ## This is example 1.
