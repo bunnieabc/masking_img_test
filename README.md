@@ -1,6 +1,6 @@
 # Collage Art Poster Generator
 
-### Just put textures you want and svg into the folder and then it would generate awesome posters for you. 
+#### Just put textures you want and svg into the folder and then it would generate awesome posters for you. 
 
 Press enter to do screenshot and change whatever title you want.
 
